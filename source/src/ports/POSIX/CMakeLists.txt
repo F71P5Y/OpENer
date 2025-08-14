@@ -47,23 +47,59 @@ if( OPENER_INSTALL_AS_LIB )
    )
 endif()
 
-if( NOT OpENer_TESTS)
-  add_executable(OpENer main.c)
-  target_link_libraries( OpENer PLATFORM_GENERIC ${OpENer_PLATFORM}PLATFORM ${PLATFORM_SPEC_LIBS} CIP Utils SAMPLE_APP ENET_ENCAP NVDATA rt cap pthread)
+# if( NOT OpENer_TESTS)
+#   add_executable(OpENer main.c)
+#   target_link_libraries( OpENer PLATFORM_GENERIC ${OpENer_PLATFORM}PLATFORM ${PLATFORM_SPEC_LIBS} CIP Utils SAMPLE_APP ENET_ENCAP NVDATA rt cap pthread)
+
+#   # Add additional CIP Objects
+#   string(COMPARE NOTEQUAL "${OpENer_ADD_CIP_OBJECTS}" "" OpENer_HAS_ADDITIONAL_OBJECT )
+#   if( OpENer_HAS_ADDITIONAL_OBJECT )
+#     message(STATUS "Additional activated objects: ${OpENer_ADD_CIP_OBJECTS}")
+#     string(REPLACE " " ";" OpENer_ADD_CIP_OBJECTS_LIST ${OpENer_ADD_CIP_OBJECTS} )
+#     foreach(CIP_OBJECT IN LISTS OpENer_ADD_CIP_OBJECTS_LIST)
+#       include_directories(${${CIP_OBJECT}_SOURCE_DIR})
+#       target_link_libraries( OpENer ${CIP_OBJECT} )
+#     endforeach()
+#   else()
+#     message(STATUS "No additional activated objects")
+#   endif()
+# endif()
+
+if(NOT OpENer_TESTS)
+  zephyr_library()
+  zephyr_library_sources(main.c)
+  zephyr_include_directories(${ZEPHYR_BASE}/include)
+zephyr_include_directories(${PROJECT_BINARY_DIR}/zephyr/include/generated)
+
+
+  zephyr_library_link_libraries(
+    PLATFORM_GENERIC
+    ${OpENer_PLATFORM}PLATFORM
+    ${PLATFORM_SPEC_LIBS}
+    CIP
+    Utils
+    SAMPLE_APP
+    ENET_ENCAP
+    NVDATA
+    rt
+    c
+    pthread
+  )
 
   # Add additional CIP Objects
-  string(COMPARE NOTEQUAL "${OpENer_ADD_CIP_OBJECTS}" "" OpENer_HAS_ADDITIONAL_OBJECT )
-  if( OpENer_HAS_ADDITIONAL_OBJECT )
+  string(COMPARE NOTEQUAL "${OpENer_ADD_CIP_OBJECTS}" "" OpENer_HAS_ADDITIONAL_OBJECT)
+  if(OpENer_HAS_ADDITIONAL_OBJECT)
     message(STATUS "Additional activated objects: ${OpENer_ADD_CIP_OBJECTS}")
-    string(REPLACE " " ";" OpENer_ADD_CIP_OBJECTS_LIST ${OpENer_ADD_CIP_OBJECTS} )
+    string(REPLACE " " ";" OpENer_ADD_CIP_OBJECTS_LIST ${OpENer_ADD_CIP_OBJECTS})
     foreach(CIP_OBJECT IN LISTS OpENer_ADD_CIP_OBJECTS_LIST)
       include_directories(${${CIP_OBJECT}_SOURCE_DIR})
-      target_link_libraries( OpENer ${CIP_OBJECT} )
+      zephyr_library_link_libraries(${CIP_OBJECT})
     endforeach()
   else()
     message(STATUS "No additional activated objects")
   endif()
 endif()
+
 
 if(NOT ${CMAKE_INSTALL_BINDIR} STREQUAL "")
   install (PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/OpENer DESTINATION ${CMAKE_INSTALL_FULL_BINDIR})

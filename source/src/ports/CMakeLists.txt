@@ -9,6 +9,9 @@ add_subdirectory( nvdata )
 # Add common includes                 #
 #######################################
 opener_common_includes()
+zephyr_include_directories(${ZEPHYR_BASE}/include)
+zephyr_include_directories(${PROJECT_BINARY_DIR}/zephyr/include/generated)
+
 
 #######################################
 # Add platform-specific includes      #

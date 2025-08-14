@@ -31,6 +31,10 @@ if(NOT DEFINED OpENer_Device_Minor_Version)
   set(OpENer_Device_Minor_Version ${PROJECT_VERSION_MINOR} CACHE STRING "Minor Version")
 endif()
 
+zephyr_include_directories(${ZEPHYR_BASE}/include)
+zephyr_include_directories(${PROJECT_BINARY_DIR}/zephyr/include/generated)
+
+
 configure_file(  
 	"${PROJECT_SOURCE_DIR}/src/ports/devicedata.h.in"
 	"${PROJECT_BINARY_DIR}/src/ports/devicedata.h"

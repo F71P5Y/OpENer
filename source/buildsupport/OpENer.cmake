@@ -4,10 +4,14 @@ FUNCTION(opener_add_definition)
   ENDFOREACH(ARG)
 ENDFUNCTION(opener_add_definition)
 
+
 ##############################################
 # Adds platform specific include directories #
 ##############################################
 macro(opener_platform_support ARGS)
+
+set(OPENER_PLATFORM POSIX)
+
 
   if(OpENer_PLATFORM STREQUAL "")
     message(FATAL_ERROR "No platform selected!")
