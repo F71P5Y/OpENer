@@ -1,31 +1,21 @@
-#######################################
-# Ethernet encapsulation library      #
-#######################################
+# Ethernet encapsulation library
 
-set( ENET_ENCAP_SRC cpf.c encap.c endianconv.c )
+set(ENET_ENCAP_SRC
+    cpf.c
+    encap.c
+    endianconv.c
+)
 
-#######################################
-# Add common includes                 #
-#######################################
-opener_common_includes()
+# Zephyr library definition
+zephyr_library()
 
-#######################################
-# Add platform-specific includes      #
-#######################################
-opener_platform_support("INCLUDES")
+zephyr_library_sources(
+    ${ENET_ENCAP_SRC}
+)
 
-add_library( ENET_ENCAP ${ENET_ENCAP_SRC} )
+zephyr_include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-if( OPENER_INSTALL_AS_LIB )
-  install(TARGETS ENET_ENCAP
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  )
-  install(DIRECTORY ${ENET_ENCAP_SRC_DIR}
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-    FILES_MATCHING PATTERN "*.h"
-   )
-endif()
-
-target_link_libraries( ENET_ENCAP Utils)
+# Link with other Zephyr libraries
+zephyr_library_link_libraries(Utils)

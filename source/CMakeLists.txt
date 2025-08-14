@@ -31,9 +31,57 @@ if(NOT DEFINED OpENer_Device_Minor_Version)
   set(OpENer_Device_Minor_Version ${PROJECT_VERSION_MINOR} CACHE STRING "Minor Version")
 endif()
 
-zephyr_include_directories(${ZEPHYR_BASE}/include)
-zephyr_include_directories(${PROJECT_BINARY_DIR}/zephyr/include/generated)
+zephyr_library()
 
+zephyr_library_sources(
+    src/enet_encap/cpf.c
+    src/enet_encap/encap.c
+    src/enet_encap/endianconv.c
+
+    src/cip/cipioconnection.c
+    src/cip/cipqos.c
+    src/cip/cipclass3connection.c
+    src/cip/cipelectronickey.c
+    src/cip/cipconnectionobject.c
+    src/cip/cipethernetlink.c
+    src/cip/cipconnectionmanager.c
+    src/cip/cipstringi.c
+    src/cip/ciptypes.c
+    src/cip/cipepath.c
+    src/cip/ciptcpipinterface.c
+    src/cip/cipcommon.c
+    src/cip/appcontype.c
+    src/cip/cipdlr.c
+    src/cip/cipmessagerouter.c
+    src/cip/cipstring.c
+    src/cip/cipidentity.c
+    src/cip/cipassembly.c
+
+    src/utils/xorshiftrandom.c
+    src/utils/random.c
+    src/utils/enipmessage.c
+    src/utils/doublylinkedlist.c
+
+    src/ports/generic_networkhandler.c
+
+    src/ports/nvdata/nvqos.c
+    src/ports/nvdata/nvdata.c
+    src/ports/nvdata/conffile.c
+    src/ports/nvdata/nvtcpip.c
+
+    src/ports/POSIX/main.c
+    src/ports/POSIX/sample_application/sampleapplication.c
+    src/ports/POSIX/sample_application/ethlinkcbs.c
+    src/ports/POSIX/networkconfig.c
+    src/ports/POSIX/networkhandler.c
+    src/ports/POSIX/opener_error.c
+    src/ports/socket_timer.c
+)
+
+
+zephyr_include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
 configure_file(  
 	"${PROJECT_SOURCE_DIR}/src/ports/devicedata.h.in"

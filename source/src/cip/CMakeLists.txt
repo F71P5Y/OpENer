@@ -1,30 +1,28 @@
-#######################################
-# CIP library                         #
-#######################################
+# CIP library
 
-#######################################
-# Add common includes                 #
-#######################################
-opener_common_includes()
+zephyr_library()
 
-#######################################
-# Add platform-specific includes      #
-#######################################
-opener_platform_support("INCLUDES")
+zephyr_library_sources(
+    appcontype.c
+    cipassembly.c
+    cipclass3connection.c
+    cipcommon.c
+    cipconnectionobject.c
+    cipconnectionmanager.c
+    cipdlr.c
+    cipethernetlink.c
+    cipidentity.c
+    cipioconnection.c
+    cipmessagerouter.c
+    ciptcpipinterface.c
+    ciptypes.c
+    cipepath.c
+    cipelectronickey.c
+    cipstring.c
+    cipstringi.c
+    cipqos.c
+)
 
-set( CIP_SRC appcontype.c cipassembly.c cipclass3connection.c cipcommon.c cipconnectionobject.c cipconnectionmanager.c cipdlr.c ciperror.h cipethernetlink.c cipidentity.c cipioconnection.c cipmessagerouter.c ciptcpipinterface.c ciptypes.h cipepath.c cipelectronickey.c cipstring.c cipstringi.c cipqos.c ciptypes.c)
+zephyr_include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-add_library( CIP ${CIP_SRC} )
-
-if( OPENER_INSTALL_AS_LIB )
-  target_link_libraries(CIP ENET_ENCAP)
-  install(TARGETS CIP
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  )
-  install(DIRECTORY ${CIP_SRC_DIR}
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-    FILES_MATCHING PATTERN "*.h"
-   )
-endif()
+zephyr_library_link_libraries(ENET_ENCAP)
